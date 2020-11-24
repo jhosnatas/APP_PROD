@@ -3,16 +3,16 @@ a sessions_longops ajuda a uma analise fácil se o processo esta travado mas ape
 
 exemplo de saida do verpid
 
------------------------------------------------------------------------------------------------------------------------------
- MODULO: @/arquivo_sql_em_execucao.tmp.sql.tmp
- SID: 3223
- SERIAL: 16707
- PROCESS: 55682
- USER: SYSADM
- STATUS: ACTIVE
- MACHINE: maquina111
- SQL_ID: dayga8dd464k
- LONGOPS: 37%
-----------------------------------------------------------------------------------------------------------------------------
-(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = hosttnsping)(PORT = 9999))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = BANCODBOORACLE)))
-----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------- \n
+ MODULO: @/arquivo_sql_em_execucao.tmp.sql.tmp \n
+ SID: 3223 \n
+ SERIAL: 16707 \n
+ PROCESS: 55682 \n
+ USER: SYSADM \n
+ STATUS: ACTIVE \n
+ MACHINE: maquina111 \n
+ SQL_ID: dayga8dd464k \n
+ LONGOPS: 37% \n
+---------------------------------------------------------------------------------------------------------------------------- \n
+(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = hosttnsping)(PORT = 9999))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = BANCODBOORACLE))) \n
+---------------------------------------------------------------------------------------------------------------------------- \n
