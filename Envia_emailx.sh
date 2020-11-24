@@ -15,6 +15,6 @@ if [ "$(ls $MASK 2> /dev/null | wc -l)" == "0" ] ; then
                 EMAIL+="\n \n Att. MEU TIME DE RELATORIOS" ## rodade
                 ANEXOS+=$(ls ${MASK} | awk '{print "-a " $1}' ) ### lista de anexos
                 echo -e ${EMAIL[@]} |  mailx -r EXTRATOR_ETL -s "${TITLE}" ${ANEXOS} $PARA #envia email
-                # for x in $(ls $MASK ) ; do mv $x /bscs/bin/CA/MRH/work/report/sent/ ; done # move arquivos para o backupi
+                 for x in $(ls $MASK ) ; do mv $x /enviados/ ; done # move arquivos para o backupi
 fi
 # Final do Shell
