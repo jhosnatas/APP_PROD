@@ -18,3 +18,4 @@ if [ "$(ls $MASK 2> /dev/null | wc -l)" == "0" ] ; then
                  for x in $(ls $MASK ) ; do mv $x /enviados/ ; done # move arquivos para o backupi
 fi
 # Final do Shell
+
