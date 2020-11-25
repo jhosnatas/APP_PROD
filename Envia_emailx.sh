@@ -1,4 +1,4 @@
-!/bin/ksh
+#!/bin/sh
 # Enviando por email utilizando mailx
 # utizando array ao inves de criar arquivos 
 # JONATAS SILVA
