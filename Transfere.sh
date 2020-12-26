@@ -77,7 +77,7 @@ cont="0"
 
 for I in $(echo ${!ListaARQ[*]}); do
         if [ -e ${ListaARQ[I]} ] ; then
-        if [ "$cont" -gt "2000" ] ; then ENVIA & sleep 3
+        if [ "$cont" -gt "501" ] ; then ENVIA & sleep 3
 		MKDIR ; cont="0" ; fi
         mv ${ListaARQ[I]} $DIR
         cont=$(($cont+1))
