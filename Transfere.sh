@@ -13,7 +13,8 @@ GERA_LISTA ()
 ListaARQ=$(sqlplus -s ${USERDB}/${SENHABD}@ORACLE12C<<END
 set heading OFF termout ON trimout ON feedback OFF
 set pagesize 0
-select caminhodoarquivo from arquivos gerados where request_id = '$REQUEST' ;
+spool ListaARQ.txt
+select caminhodoarquivo from arquivosgerados where request_id = '$REQUEST' ;
 END
 )
 ### tratando multiplis valores no array
@@ -22,30 +23,19 @@ wait
 ListaARQ=("${ARRAY[@]}")
 }
 
-
 DIVIDE_LISTA () {
-### DIVIDINDO O ARRAY EM 3 PARA EXECUTAR A TRANSFERENCIA EM PARALELO
-#tira da sequencia da tabela 
-#motivo em uma lista ordenada de 150k caso eu já tenha enviado 100 primeiros o array 1 e 2 ficaria somente com arquivos inexistentes eo 3 com os 50k para enviar 
-#desta forma cada array teria 16.666 arquivos para enviar . 
-
-
+echo "INICIANDO O ENVIO"
 date
-        for ARQUIVO in $(echo ${!ListaARQ[*]}); do
-        MENOR=$(printf '%s\n'  $(echo ${#ARRAY1[*]}) $(echo ${#ARRAY2[*]}) $(echo ${#ARRAY3[*]}) | sort -n | head -n1 )
-        if [ "$(echo ${#ARRAY1[*]})" -le "$MENOR" ] ; then ARRAY1+=("ARQUIVO")
-        elif [ "$(echo ${#ARRAY2[*]})" -le $(echo ${#ARRAY3[*]}) ] ; then ARRAY2+=("ARQUIVO")
-        else ARRAY3+=("ARQUIVO")
-        fi
-        done
-echo "divido"
-date
-####CHAMANDO A TRANSFERENCIA PARALELA
-TRANSFERE ${ARRAY1[@]} &
-TRANSFERE ${ARRAY2[@]} &
-TRANSFERE ${ARRAY3[@]} &
+#DIVIDE A LISTA
+split --lines 1000 ListaARQ.txt ListaARQ_
+#PASSO A LISTA COMO PARAMETRO PARA A FUNÇAO TRANSFERE E EXECUTADO EM SEGUNDO PLANO , PODENDO EXECUTAR N LISTA SIMULTANEAS 
+for LISTA in $(ls ListaARQ_*) ; do TRANSFERE $(cat ${LISTA}) &
+NOAR=$(jobs |wc -l); echo " $LISTA em execucao " ; rm -f $LISTA ; sleep 1
+until [ ! $NOAR -ge "30" ] ; do sleep 15 ; NOAR=$(jobs |wc -l) ; done
+done
+
+rm -f ListaARQ.txt
         }
-
 
 MKDIR ()
 {
