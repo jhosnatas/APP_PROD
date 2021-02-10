@@ -9,19 +9,19 @@ O objetivo deste repositório e demostrar o uso do shellscript para automatizar 
 Este script gera uma lista de conexções do sqlplus no host 
 com as informações  necessárias para continuação da analise pelo dba . 
 , ajudando na agilidade  na abertura de chamados . a sessions_longops ajuda a uma analise fácil se o processo esta travado mas apenas para sessões com durações maior de 6 segundos .<p>
------------------------------------------------------------------------------------------------------------------------<p>
+-----------------------------------------------------------------------------------------------------------------------<br>
  MODULO: @/arquivo_sql_em_execucao.tmp.sql.tmp<br>
- SID: 3223<p>
- SERIAL: 16707<p>
- PROCESS: 55682<p>
- USER: SYSADM<p>
- STATUS: ACTIVE<p>
- MACHINE: maquina111<p>
- SQL_ID: dayga8dd464k<p>
- LONGOPS: 37%<p>
--------------------------------------------------------------------------------------------------------------------------<p>
-(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = hosttnsping)(PORT = 9999))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = BANCODBOORACLE)))<p>
--------------------------------------------------------------------------------------------------------------------------<p>
+ SID: 3223<br>
+ SERIAL: 16707<br>
+ PROCESS: 55682<br>
+ USER: SYSADM<br>
+ STATUS: ACTIVE<br>
+ MACHINE: maquina111<br>
+ SQL_ID: dayga8dd464k<br>
+ LONGOPS: 37%<br>
+-------------------------------------------------------------------------------------------------------------------------<br>
+(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = hosttnsping)(PORT = 9999))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = BANCODBOORACLE)))<br>
+-------------------------------------------------------------------------------------------------------------------------<br>
   
 
 ## ENVIA EMAIL
@@ -31,16 +31,16 @@ Shellscript para envio de email automatico com relatórios anexos .
 Para anexos pesados é necessario criar um job para aft ou scp <p> 
 Ex do email enviado <p>
 
-Titulo :[MODULO NOME] RELATORIO NOME [24/11/2020] <p>
- Segue lista de arquivos RELATORIO NOME ANEXOS  <p>
- Anexo0.csv <p>
- Anexo1.csv <p>
- Anexo2.csv <p>
- Anexo3.csv <p>
- Anexo4.csv <p>
- Anexo5.csv <p>
+Titulo :[MODULO NOME] RELATORIO NOME [24/11/2020] <br>
+ Segue lista de arquivos RELATORIO NOME ANEXOS  <br>
+ Anexo0.csv <br>
+ Anexo1.csv <br>
+ Anexo2.csv <br>
+ Anexo3.csv <br>
+ Anexo4.csv <br>
+ Anexo5.csv <br>
 
- Att. TIME DE BI <p>
+ Att. TIME DE BI <br>
 
 ## Transferencia 
 [Transfere.sh ]("https://github.com/jhosnatas/APP_PROD/blob/main/Transfere.sh")
