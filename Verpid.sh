@@ -25,7 +25,7 @@ END
 )
 
 ## tratando multiplos vetores no array
-for I in $(printf "%s\n" `echo ${SID[@]} |sed 's/ /\n/g'`) ; do ARRAY+=("${I}") ; done
+for I in $(echo ${SID[@]} |sed 's/ /\n/g') ; do ARRAY+=("${I}") ; done
 SID=("${ARRAY[@]}")
 
 ## SESSION_LONGOPS "This view displays the status of various operations"
