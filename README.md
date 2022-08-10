@@ -46,3 +46,16 @@ Titulo :[MODULO NOME] RELATORIO NOME [24/11/2020] <br>
 [Transfere.sh ]("https://github.com/jhosnatas/APP_PROD/blob/main/Transfere.sh")
 
 Esta é um versão simplificado de um shellscript  para transferir arquivos  apatir de uma lista obtida no banco oracle , com capactade de enviar 100k por hora . Dividindo a lista e trabalhando com ate 30 paralelos simultâneos , conforme configuração. 
+
+## Lowcase.sh
+[Lowcase.sh ]("https://github.com/jhosnatas/APP_PROD/blob/main/Lowcase.sh")
+Script feito para tratar conteudo de arquivos texto de maiusculo para minisculo .
+
+## Template.sh
+[Template.sh ]("https://github.com/jhosnatas/APP_PROD/blob/main/Template.sh")
+Script TEMPLATE  genérico para criação de novos scripts , neles já contem as seguintes funções 
+VALIDA : Função para validar erros e escrever no log .
+VALIDA_LOCK : Cria um arquivo lock de execução e faz a validação antes de iniciar uma nova execução , visando eliminar execuções simultâneas . 
+TEMPOS : Registra no banco de dados ORACLE inicio , fim , saida e etc sobre o script .
+VALIDA PARAMETROS : Validar parâmetros de entrada do script .
+
