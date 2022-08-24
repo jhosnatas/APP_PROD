@@ -1,5 +1,8 @@
 Códigos prontos
 
+Tratando arquivos windows com perl
+perl -p -e 's/\r$//' < winfile.txt > unixfile.txt
+
 Condicionais com o IF
 if [ -f "$arquivo" ]; then echo 'Arquivo encontrado'; fi
 if [ ! -d "$dir" ]; then echo 'Diretório não encontrado'; fi
