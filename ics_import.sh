@@ -428,7 +428,7 @@ dir_git_lab ()
         PROJETO=$1
         AMBIENTE=$2
         export WKDIR="/dw/WORK"
-        GITLAB=http://net002prdlnx395.dcing.corp/bi_user_hml/$PROJETO
+        GITLAB=http://vpsdomeugitlab.dcing.corp/bi_user_hml/$PROJETO
         cd $WKDIR
 
         if [ $# -lt 2 ] ; then
