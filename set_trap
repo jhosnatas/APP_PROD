@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+#set -euo pipefail
+set -eE
+
+DIR_LOG=/XXXX/YYYY/LOG
+DATE_PROC=$(date +%Y%m%d_%H%M)
+#LOG=${DIR_LOG}/${0##*/}_${DATE_PROC}.log
+LOCK=${DIR_LOG}/${0##*/}.lock
+DTINICIO="$(date +%d/%m/%Y" "%H:%M:%S)"
+WKDIR="/dw/WORK"
+
+dir_git_lab ()
+        {
+        export WKDIR="/xxxx/WORK"
+        GITLAB=http://xxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxx/xxxx/VERSIONAMENTO
+        cd $WKDIR
+
+        if ! [ -d "$WKDIR/VERSIONAMENTO" ]; then
+                git clone $GITLAB
+        fi
+
+        cd "$WKDIR/VERSIONAMENTO"
+        git checkout ${AMBIENTE}
+        git pull
+
+        if [ ! -d "$WKDIR/VERSIONAMENTO/$PROJETO" ] ; then
+                mkdir -p "$WKDIR/VERSIONAMENTO/$PROJETO"
+        fi
+
+        cd $PROJETO
+
+        }
+
+ics_update ()
+        {
+        export PROJETO=${1}
+        export AMBIENTE=${2}
+        ZIPFILE=${3}
+
+        echo "FUNCAO: ICS UPDATE"
+        #PROMOVER BRANCH CONFORME AMBIENTE CONFORME HOST
+        serverlogin #POPULAR USER/PWD CONFORME HOST
+        case ${USER##*@} in
+                 bi.hom)
+                         if [ "${AMBIENTE}" == "DESENVOLVIMENTO" ] ; then
+                                echo "update ${PROJETO} ${AMBIENTE} ${ENVI} ${ZIPFILE}"
+                                update ${PROJETO} ${AMBIENTE} ${ENVI} ${ZIPFILE}
+                                else if [ "${AMBIENTE}" == "HOMOLOGACAO" ] ; then
+                                        echo "PACOTE NA BRANCH CORRETA"
+                                        fi
+                                fi
+                         ;;
+                 bi.prd)
+                         echo "PROMOVER PACOTE A BRANCH DE PRODUCAO ANTES DO DEPLOY"
+                         exit 9
+                         ;;
+                 *) echo "HOST INVALIDO - ASSOCIAR AMBIENTE AO HOST" && exit 1
+                         ;;
+        esac
+        #TRATANDO O PACOTE
+        dir_git_lab $PROJETO $AMBIENTE
+        echo "INICIANDO VALIDACAO DO PACOTE"
+        if [ ! -f "$ZIPFILE" ]; then
+            echo "Arquivo $ZIPFILE não encontrado."
+            exit 1
+        fi
+        
+        # Extrai o arquivo ZIP
+        TMPDIR=$(mktemp -d)
+        unzip -o -q "$ZIPFILE" -d "$TMPDIR"
+        if [ $? -ne 0 ]; then
+            echo "Erro ao descompactar $ZIPFILE."
+            rm -rf "$TMPDIR"
+            exit 1
+        fi
+        ACTUALDIR="$(pwd)"
+        # Seleciona o arquivo de deploy dentro do diretório temporário
+        DEPLOYZIP=$(find "$TMPDIR" -type f -iname "deploy_*.zip" -o -iname "DEPLOY_*.zip" -o -iname "exportMetadata.v2.json" | head -n 1)
+        if [ -z "$DEPLOYZIP" ]; then
+            echo "Arquivo de deploy não encontrado no diretório $TMPDIR."
+            rm -rf "$TMPDIR"
+            exit 1
+        fi
+        echo " $ACTUALDIR "
+        echo " $DEPLOYZIP "
+        grep -q "exportMetadata.v2.json" <<< $DEPLOYZIP
+                if [ $? -eq 0 ] ; then
+                        DEPLOYZIP="${ACTUALDIR}/${ZIPFILE}"
+                fi
+
+        echo "Arquivo de deploy selecionado: $DEPLOYZIP"
+        zipfile "$DEPLOYZIP"
+
+        # Apaga o diretório temporário
+        rm -rf "$TMPDIR"
+        
+        echo -e "CONECTANDO AO IICS \nAMBIENTE: ${ENVI}"
+        echo -e "AMBIENTE ORIGEM: ${SRCENV}\nAMBIENTE DESTINO: ${ENVI}\n"
+        proxy_ini
+        get_token
+        valida_token
+        cria_import
+#       start_import
+        status_import
+        publish_taskflow
+
+cria_log ()
+        {
+        FUNCAO=${1}
+        PROJETO=${2}
+        AMBIENTE=${3}
+        ZIPFILE=${4}
+                LOG=${DIR_LOG}/${0##*/}_${PROJETO}_${DATE_PROC}.log
+                {
+               echo "$DTINICIO Iniciada a execucao"
+               echo "Script: ${0##*/}"
+               echo "PROJETO: $PROJETO"
+               echo "AMBIENTE: $AMBIENTE"
+               echo "PACOTE: $ZIPFILE"
+               echo "USUARIO: ${USER}"
+               echo "Log: ${LOG}"
+               } | tee -a ${LOG}
+        }
+        
+#INICIO DA EXECUÇÃO AQUI
+if [ $1 == "-ics_update" ] && [ $# -eq 4 ] ; then
+        cria_log ${1} ${2^^} ${3^^} $4
+        ics_update ${2^^} ${3^^} $4 | tee -a ${LOG}
+        else
+                echo "ERRO DE PARAMETROS"
+                echo "-ics_update PROJETO AMBIENTE PACOTE"
+                exit 1
+fi
+
+exit 0
